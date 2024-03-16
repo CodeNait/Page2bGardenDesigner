@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Creator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        #container {
+            text-align: center;
+        }
+
+        #grid-container {
+            display: grid;
+            border: 1px solid #000;
+            margin-top: 20px;
+        }
+
+        .cell {
+            border: 1px solid #ccc;
+            padding: 0;
+            margin: 0;
+            width: 30px; /* 1 foot = 30 pixels */
+            height: 30px; /* 1 foot = 30 pixels */
+        }
+
+    </style>
+</head>
+<body>
+<div id="container">
+    <label for="rows">Rows:</label>
+    <input type="number" id="rows" min="1">
+    <label for="cols">Columns:</label>
+    <input type="number" id="cols" min="1">
+    <button onclick="createGrid()">Create Grid</button>
+    <div id="grid-container"></div>
+    <br>
+    <!-- Button to navigate to the second page -->
+    <button onclick="navigateToSecondPage()">Select Plants</button>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if dimensions are stored in local storage
+        const storedRows = localStorage.getItem('rows');
+        const storedCols = localStorage.getItem('cols');
+        if (storedRows && storedCols) {
+            document.getElementById('rows').value = storedRows;
+            document.getElementById('cols').value = storedCols;
+            createGrid();
+        }
+    });
+
+    function createGrid() {
+        const rows = parseInt(document.getElementById('rows').value);
+        const cols = parseInt(document.getElementById('cols').value);
+        const gridContainer = document.getElementById('grid-container');
+
+        // Store dimensions in local storage
+        localStorage.setItem('rows', rows);
+        localStorage.setItem('cols', cols);
+
+        // Clear previous grid
+        gridContainer.innerHTML = '';
+
+        // Calculate cell size based on the available space and user input dimensions
+        const width = gridContainer.offsetWidth / cols;
+        const height = gridContainer.offsetHeight / rows;
+        const size = Math.min(width, height);
+
+        // Define a larger cell size for better visibility
+        const cellSize = 50; // You can adjust this value as needed
+
+        // Create new grid
+        gridContainer.style.gridTemplateColumns = `repeat(${cols}, ${cellSize}px)`;
+        gridContainer.style.gridTemplateRows = `repeat(${rows}, ${cellSize}px)`;
+
+        for (let i = 0; i < rows * cols; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            cell.style.width = `${cellSize}px`;
+            cell.style.height = `${cellSize}px`;
+            gridContainer.appendChild(cell);
+        }
+    }
+
+    // Function to navigate to the second page (Add the website link here in "")
+    function navigateToSecondPage() {
+        window.location.href = 'https://codenait.github.io/Page3PlantSelector/';
+    }
+</script>
+</body>
+</html>
